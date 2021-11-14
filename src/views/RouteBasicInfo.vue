@@ -112,12 +112,13 @@ export default {
             routeName: '',
             id:'',
             isDirectional: 'true',
+
         }
     },
     methods:{
         search(){
 
-            request.get("/api/StationById",{
+            request.get("/StationById",{
                 params:{
                     id:this.id
                 }
@@ -136,9 +137,6 @@ export default {
 
         }
     },
-  name: 'Home',
-  components: {
 
-  }
 }
 </script>
