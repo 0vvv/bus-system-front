@@ -1,19 +1,21 @@
 # bus-system-front
 
-## Project setup
-```
-npm install
-```
+## 基本信息查询
+对应需求1
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### 站点查询
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 班次查询
+#### 全部班次信息查询
+对应需求7
+#### 站点即将停靠线路
+对应需求8
+#### 站点最近班次
+对应需求9
+### 分析查询
+#### 统计站台
+对应需求10.11
+#### 统计线路
+对应需求12.14.16.17
+#### 站台间线路数
+对应需求15
