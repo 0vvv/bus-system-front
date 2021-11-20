@@ -26,7 +26,6 @@
                 <el-timeline-item
                         v-for="(station, index) in stations1"
                         :key="index"
-                        :timestamp="index"
                         :hollow="station.hollow"
                         :color="station.color"
                 >
@@ -45,7 +44,6 @@
                     <el-timeline-item
                             v-for="(station, index) in stations2"
                             :key="index"
-                            :timestamp="index"
                             :hollow="station.hollow"
                             :color="station.color"
                     >
@@ -79,7 +77,7 @@
 
             search(){
                 this.clear();
-                request.get("/stationLine/stationofvagueline/"
+                request.get("/stationLine/stationofpreciseline/"
                    +this.routeName
                 ).then(res => {
                     console.log(res);
@@ -95,10 +93,8 @@
                     else
                     {
                         this.routes = res.data;
-                        this.routeName1 = this.routes[0].name
-                        this.routeName2 = this.routes[1].name
-                        this.stations1 = this.routes[0].stations
-                        this.stations2 = this.routes[1].stations
+                        this.routeName1 = this.routes.name
+                        this.stations1 = this.routes.stations
                     }
                 })
             },

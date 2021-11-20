@@ -1,19 +1,31 @@
 # bus-system-front
 
-## Project setup
-```
-npm install
-```
+#### 站点查询模块
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+#####  全部站点查询
 
-### Compiles and minifies for production
-```
-npm run build
-```
+>  对应需求2：查询某条线路方向的全部站点信息。
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+目前根据需求要求，使用精确查询，即必须指定上行/下行，查询”2路“将得不到结果。
+
+【可能前端要处理把他补全成上行/下行？
+
+##### 停靠公交线路查询
+
+> 对应需求3：查询锦城广场站停靠的所有线路
+
+:ok:
+
+##### 沿途站点查询
+
+> 对应需求4：查询某条线路从某站到某站，线路的运行方向、沿路站点和运行时长
+
+##### 最短路径查询
+
+> 对应需求5：查询某两个站台之间的最短路径
+
+
+
+##### 直达站点查询
+
+> 查询某两个站点之间是否存在直达线路
