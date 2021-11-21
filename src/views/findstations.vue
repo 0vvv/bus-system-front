@@ -59,6 +59,8 @@
                 endStations:[],
                 metroStations:[],
                 oneWayStations:[],
+                stationPairs:[],
+                stationPairNumbers:[],
                 showdetails:false,
                 options: ref([
                     {
@@ -69,6 +71,10 @@
                         value: 'Option2',
                         label: '按站点类型统计站点',
                     },
+                    {
+                        value: 'Option3',
+                        label: '按连接站台间线路数量排序站台'
+                    }
 
                 ]),
                 value: ref(''),
@@ -86,6 +92,9 @@
                         break;
                     case "Option2":
                         this.stationsbyType();
+                        break;
+                    case "Option3":
+                        this.stationsbyLink();
                         break;
 
 
@@ -187,6 +196,8 @@
                 let that = this
                 //处理点击事件
                 myChart.on('click',function (params) {
+                    if (that.value == 'Option2')
+                    {
                     that.showdetails=true;
                     that.cardTitle=params.name;
                     switch (params.dataIndex) {
@@ -204,10 +215,55 @@
                             break;
                         default:
 
-                    }
+                    }}
 
                 })
 
+            },
+
+            stationsbyLink(){
+                this.showdetails=false;
+                var myChart = echarts.init(document.getElementById('main'));
+                // 绘制图表
+                myChart.setOption({
+
+                    title: {
+                        text: '连接站台间线路数量排序站台'
+                    },
+                    tooltip: {},
+                    xAxis: {
+                        data: this.stationPairs,
+                    },
+                    yAxis: {},
+                    series: [
+                        {
+                            name: '站点数量',
+                            type: 'bar',
+                            data: this.stationPairNumbers,
+                            itemStyle:{
+                                normal: {
+                                    //柱形图圆角，顺时针左上，右上，右下，左下）
+                                    barBorderRadius: [12, 12, 12, 12],
+                                    //设置柱状图颜色渐变
+                                }
+                            }
+                        }
+                    ],
+
+                    color:{
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#5ad9e8' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#caecf0' // 100% 处的颜色
+                        }],
+                        globalCoord: true // 缺省为 false
+                    },
+                });
             },
 
 
@@ -321,6 +377,30 @@
                     {
                         this.oneWayStations = res.data.stations;
                         this.stationNumbers[3]=res.data.number;
+                    }
+                });
+
+                //请求按连接线路数量排序两个相邻站台
+                request.get("station/top15stationpairs/"
+
+                ).then(res => {
+                    console.log(res);
+
+                    if (res.data == null)
+                    {
+                        this.$message({
+                            type: "error",
+                            message: res.msg
+                        })
+
+                    }
+                    else
+                    {
+                        res.data.forEach((element,index)=>{
+                            this.stationPairs.push(element.station1.name + "-->" + element.station2.name);
+                            this.stationPairNumbers.push(element.number)
+                        })
+
                     }
                 });
 

@@ -29,7 +29,27 @@ const routes = [
     path: '/findstations',
     name:'findstations',
     component: () => import ("@/views/findstations"),
-  }
+  },
+  {
+    path: '/findlines',
+    name:'findlines',
+    component: () => import ("@/views/findlines"),
+  },
+  {
+    path: '/duplicatestations',
+    name:'duplicatestations',
+    component: () => import ("@/views/duplicatestations"),
+  },
+  {
+    path: '/transferline',
+    name:'transferline',
+    component: () => import ("@/views/transferline"),
+  },
+  {
+    path: '/timetablewithrange',
+    name:'timetablewithrange',
+    component: () => import ("@/views/timetablewithrange"),
+  },
 
 ]
 
