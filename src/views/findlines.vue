@@ -179,7 +179,7 @@
             getData(){
                 //mounted时请求数据
                 //请求不同类型公交数量
-                request.get("line/findtypeandnumberoflines"
+                request.get("line/find/type/and/number/of/line"
 
                 ).then(res => {
                     console.log(res);
@@ -205,7 +205,7 @@
                 });
 
                 //请求根据站点数量排序线路
-                request.get("line/top15moststationsroutes"
+                request.get("line/top15/most/station/route"
 
                 ).then(res => {
                     console.log(res);

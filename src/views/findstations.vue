@@ -270,7 +270,7 @@
             getData(){
                 //mounted时请求数据
                 //请求前15个线路最多的站点
-                request.get("station/findtop15linenumberofstations/"
+                request.get("station/find/top15/linenumber/of/station/"
 
                 ).then(res => {
                     console.log(res);
@@ -297,7 +297,7 @@
 
 
                 //请求始发站
-                request.get("station/findnumberofbeginstations/"
+                request.get("station/find/number/of/begin/station/"
 
                 ).then(res => {
                     console.log(res);
@@ -318,7 +318,7 @@
                 });
 
                 //请求终点站
-                request.get("station/findnumberofendstations/"
+                request.get("station/find/number/of/end/station/"
 
                 ).then(res => {
                     console.log(res);
@@ -339,7 +339,7 @@
                 });
 
                 //请求地铁站
-                request.get("station/findnumberofmetrostations/"
+                request.get("station/find/number/of/metro/station/"
 
                 ).then(res => {
                     console.log(res);
@@ -360,7 +360,7 @@
                 });
 
                 //请求单行站
-                request.get("line/findthenumberofonewaystations/"
+                request.get("line/find/the/number/of/oneway/station/"
 
                 ).then(res => {
                     console.log(res);
@@ -381,7 +381,7 @@
                 });
 
                 //请求按连接线路数量排序两个相邻站台
-                request.get("station/top15stationpairs/"
+                request.get("station/top15/station/pair/"
 
                 ).then(res => {
                     console.log(res);

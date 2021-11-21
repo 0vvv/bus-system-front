@@ -79,7 +79,7 @@
             },
             getData(){
                 //数据
-                request.get("stationLine/duplicatestationsoflines/"+this.routeName1+"/"+this.routeName2
+                request.get("stationline/duplicate/station/of/line/"+this.routeName1+"/"+this.routeName2
 
                 ).then(res => {
                     console.log(res);

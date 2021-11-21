@@ -43,7 +43,7 @@
         },
         methods:{
             search(){
-                request.get("/stationLine/lineofvaguestation/"
+                request.get("/stationline/line/of/vague/station/"
                     +this.stationName
                 ).then(res => {
                     console.log(res);

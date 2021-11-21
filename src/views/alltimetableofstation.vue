@@ -1,19 +1,13 @@
-<template xmlns:el-input="http://www.w3.org/1999/html">
-
+<template>
     <el-main>
         <!--搜索框-->
         <el-row >
-            <el-tooltip
-                    class="item"
-                    effect="dark"
-                    content="支持不同查询方式。若输入站点名，则会按照站点id分组查询。"
-                    placement="right-start"
-            >
 
-            <el-col :span="10" style="margin-left: 10px">
-                <el-input v-model="stationName" placeholder="输入站台id或者名字" />
-            </el-col>
-            </el-tooltip>
+
+                <el-col :span="10" style="margin-left: 10px">
+                    <el-input v-model="stationID" placeholder="输入站台id" />
+                </el-col>
+
         </el-row>
         <!--时间选择器-->
         <el-row :gutter="20" type="flex" style="padding: 10px">
@@ -45,10 +39,10 @@
         <!--数字选择器-->
         <el-row style="padding: 10px">
             <el-col :span="6">
-            <el-input-number v-model="minute" :min="0" :max="100"  />
+                <el-input-number v-model="lineCount" :min="0" :max="100"  />
             </el-col>
             <el-col :span="8" style="margin-top: 10px">
-                分钟内即将停靠的线路
+                趟最近的班次信息
             </el-col>
 
         </el-row>
@@ -62,8 +56,8 @@
         <el-row  >
             <div>
                 <el-table :data="tableData" stripe style="width: 100%">
-                    <el-table-column prop="stationID" label="站点id" width="180" />
-                    <el-table-column prop="routeName" label="线路名称" width="180" />
+                    <el-table-column prop="stationName" label="站点名称" width="180" />
+                    <el-table-column prop="routeName" label="班次名称" width="180" />
                     <el-table-column prop="passTime" label="到达时间" width="180" />
                     <el-table-column prop="showmsg" label="距离现在" width="180" />
                 </el-table>
@@ -74,48 +68,31 @@
 
 
     </el-main>
-
-
-
-
-
 </template>
 
 <script>
     import request from "../utils/request";
 
     export default {
-        name: "timetablewithrange",
+        name: "alltimetableofstation",
         data(){
-            return {
+            return{
                 hourValue:"",
                 minuteValue:"",
-                stationName:"",
-                minute:"",
+                stationID:"",
+                lineCount:"",
                 tableData:[],
-
-
-        }
+            }
         },
         methods:{
-            search(){
-                this.getData();
-            },
             getData(){
-                var n = Number(this.stationName);
                 var realhourValue;
                 /*数据格式补0*/
-                if (this.hourValue < 10) {
+                if (this.hourValue < 10)
                     realhourValue="0"+this.hourValue;
-                }
                 else realhourValue = this.hourValue;
-                let url = this.stationName+"/"+realhourValue+":"+this.minuteValue+"/"+this.minute;
-
-                /*判断是id还是name*/
-                if(!isNaN(n))
-                {
-                    //是id
-                request.get("/timetable/timetable/for/id/with/range/"+url
+                let url = this.stationID+"/"+realhourValue+":"+this.minuteValue+"/"+this.lineCount;
+                request.get("/timetable/all/timetable/for/id/"+url
 
                 ).then(res => {
                     console.log(res);
@@ -136,42 +113,15 @@
                                 element.showmsg = "即将到站";
                             else element.showmsg = element.minutes+"分钟后到站";
 
-                    })
+                            element.routeName = element.routeName + "班次" + (index % this.lineCount + 1);
+
+                        })
                     }
                 });
-
-                }
-                else
-                {
-                    //是name
-                    request.get("/timetable/timetable/for/name/with/range/"+url
-
-                    ).then(res => {
-                        console.log(res);
-
-                        if (res.data == null)
-                        {
-                            this.$message({
-                                type: "error",
-                                message: res.msg
-                            })
-
-                        }
-                        else
-                        {
-                           /* this.tableData = res.data.timetables;*/
-                           res.data.forEach((element,index)=>{
-                               element.timetables.forEach((item,i)=>{
-                                   if (item.minutes == 0)
-                                       item.showmsg = "即将到站";
-                                   else item.showmsg = item.minutes+"分钟后到站";
-                                   this.tableData.push(item)
-                               })
-                            })
-                        }
-                    });
-                }
-            }
+            },
+            search(){
+                this.getData();
+            },
         }
     }
 </script>

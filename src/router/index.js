@@ -50,6 +50,26 @@ const routes = [
     name:'timetablewithrange',
     component: () => import ("@/views/timetablewithrange"),
   },
+  {
+    path: '/alltimetableofstation',
+    name:'alltimetableofstation',
+    component: () => import ("@/views/alltimetableofstation"),
+  },
+  {
+    path: '/timetableforline',
+    name:'timetableforline',
+    component: () => import ("@/views/timetableforline"),
+  },
+  {
+    path: '/DirectPathByRoute',
+    name:'DirectPathByRoute',
+    component: () => import ("@/views/DirectPathByRoute"),
+  },
+  {
+    path: '/DirectRoute',
+    name:'DirectRoute',
+    component: () => import ("@/views/DirectRoute"),
+  },
 
 ]
 

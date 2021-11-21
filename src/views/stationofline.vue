@@ -77,7 +77,7 @@
 
             search(){
                 this.clear();
-                request.get("/stationLine/stationofpreciseline/"
+                request.get("/stationline/station/of/precise/line/"
                    +this.routeName
                 ).then(res => {
                     console.log(res);

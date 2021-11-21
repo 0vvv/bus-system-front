@@ -18,9 +18,9 @@
 
                     <el-menu-item index="stationofline">全部站点查询</el-menu-item>
                     <el-menu-item index="lineofstation">停靠公交线路查询</el-menu-item>
-                    <el-menu-item index="1-2">沿途站点查询</el-menu-item>
+                    <el-menu-item index="DirectPathByRoute">沿途站点查询</el-menu-item>
                     <el-menu-item index="1-3">最短路径查询</el-menu-item>
-                    <el-menu-item index="1-4">直达站点查询</el-menu-item>
+                    <el-menu-item index="DirectRoute">直达站点查询</el-menu-item>
 
             </el-sub-menu>
             <el-sub-menu index="3">
@@ -29,9 +29,9 @@
                     <span>班次查询</span>
                 </template>
 
-                <el-menu-item index="0">全部班次信息查询</el-menu-item>
+                <el-menu-item index="timetableforline">全部班次信息查询</el-menu-item>
                 <el-menu-item index="timetablewithrange">站点即将停靠线路</el-menu-item>
-                <el-menu-item index="2">站点最近班次</el-menu-item>
+                <el-menu-item index="alltimetableofstation">站点最近班次</el-menu-item>
 
             </el-sub-menu>
             <el-sub-menu index="4">
