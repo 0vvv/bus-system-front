@@ -55,6 +55,8 @@
                 lineTypes:[],
                 lineNames:[],
                 stationNumbers: [],
+                lineRunTimes:[],
+                routeNames:[],
             }
         },
         methods:{
@@ -175,6 +177,56 @@
 
             },
 
+            //根据运行时间排序线路
+            linesbyTime(){
+                var myChart = echarts.init(document.getElementById('main'));
+                // 绘制图表
+                myChart.setOption({
+
+                    title: {
+                        text: '根据线路运行时间排序线路'
+                    },
+                    tooltip: {},
+                    xAxis: {
+                        axisLabel:{
+                            interval: 1 //横坐标强制显示完整
+                        },
+                        data: this.routeNames
+                    },
+                    yAxis: {},
+                    series: [
+                        {
+                            name: '站点数量',
+                            type: 'bar',
+                            data: this.lineRunTimes,
+                            itemStyle:{
+                                normal: {
+                                    //柱形图圆角，顺时针左上，右上，右下，左下）
+                                    barBorderRadius: [12, 12, 12, 12],
+                                    //设置柱状图颜色渐变
+                                }
+                            }
+                        }
+                    ],
+
+                    color:{
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#5ad9e8' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#caecf0' // 100% 处的颜色
+                        }],
+                        globalCoord: true // 缺省为 false
+                    },
+                });
+
+
+            },
+
 
             getData(){
                 //mounted时请求数据
@@ -231,6 +283,30 @@
                 });
 
                 //根据运行时间排序线路
+                request.get("timetable/line/of/longest/runtime"
+
+                ).then(res => {
+                    console.log(res);
+
+                    if (res.data == null)
+                    {
+                        this.$message({
+                            type: "error",
+                            message: res.msg
+                        })
+
+                    }
+                    else
+                    {
+                        this.stations = res.data;
+                        this.stations.forEach((element,index)=>{
+                            this.routeNames.push(element.routename);
+                            this.lineRunTimes.push(element.runtime)
+                        })
+
+
+                    }
+                });
             },
 
 
