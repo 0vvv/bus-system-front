@@ -70,7 +70,31 @@ const routes = [
     name:'DirectRoute',
     component: () => import ("@/views/DirectRoute"),
   },
-
+  {
+    path: '/ManageLine',
+    name:'ManageLine',
+    component: () => import ("@/views/ManageLine"),
+  },
+  {
+    path: '/notRepeating',
+    name:'notRepeating',
+    component: () => import ("@/views/notRepeating"),
+  },
+  {
+    path: '/findonewaystation',
+    name:'findonewaystation',
+    component: () => import ("@/views/findonewaystation"),
+  },
+  {
+    path: '/deleteline',
+    name:'deleteline',
+    component: () => import ("@/views/deleteline"),
+  },
+  {
+    path: '/replaceline',
+    name:'replaceline',
+    component: () => import ("@/views/replaceline"),
+  },
 ]
 
 const router = createRouter({

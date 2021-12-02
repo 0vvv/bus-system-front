@@ -257,7 +257,7 @@
                 });
 
                 //请求根据站点数量排序线路
-                request.get("line/top15/most/station/route"
+                request.get("line/top15/most/station"
 
                 ).then(res => {
                     console.log(res);

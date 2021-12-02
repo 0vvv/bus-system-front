@@ -100,22 +100,32 @@
         methods:{
             search(){
                 this.getData();
+                this.clear()
+            },
+            clear(){
+                    this.tableData=[]
             },
             getData(){
+
                 var n = Number(this.stationName);
-                var realhourValue;
+                var realhourValue,realminuteValue;
                 /*数据格式补0*/
                 if (this.hourValue < 10) {
                     realhourValue="0"+this.hourValue;
                 }
                 else realhourValue = this.hourValue;
-                let url = this.stationName+"/"+realhourValue+":"+this.minuteValue+"/"+this.minute;
+
+                if (this.minuteValue < 10) {
+                    realminuteValue="0"+this.minuteValue;
+                }
+                else realminuteValue = this.minuteValue;
+                let url = this.stationName+"/"+realhourValue+":"+realminuteValue+"/"+this.minute;
 
                 /*判断是id还是name*/
                 if(!isNaN(n))
                 {
                     //是id
-                request.get("/timetable/timetable/for/id/with/range/"+url
+                request.get("/timetable/id/with/range/"+url
 
                 ).then(res => {
                     console.log(res);
@@ -144,7 +154,7 @@
                 else
                 {
                     //是name
-                    request.get("/timetable/timetable/for/name/with/range/"+url
+                    request.get("/timetable/name/with/range/"+url
 
                     ).then(res => {
                         console.log(res);

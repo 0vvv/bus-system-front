@@ -39,8 +39,8 @@
         <el-row :gutter="0"  >
             <div>
                 <el-table :data="tableData" stripe style="width: 100%">
-                    <el-table-column prop="id" label="站点id" width="180" />
-                    <el-table-column prop="name" label="站点名称" width="180" />
+                    <el-table-column prop="stationID" label="站点id" width="180" />
+                    <el-table-column prop="stationName" label="站点名称" width="180" />
                     <el-table-column prop="english" label="站点英文名称" width="400" />
                 </el-table>
             </div>
@@ -94,13 +94,7 @@
                     }
                     else
                     {
-                        this.stations = res.data;
-                        this.stations.forEach((element,index)=>{
-                            this.station.id = element.stationID;
-                            this.station.name = element.stationName;
-                            this.station.english = element.english;
-                            this.tableData.push(this.station);
-                        })
+                        this.tableData = res.data;
 
 
                     }

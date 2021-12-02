@@ -142,7 +142,7 @@ export default {
 
         },
         getData(){
-            request.get("/line/percise/line/name/"+ this.searchName,{
+            request.get("/line/percise/name/"+ this.searchName,{
             }).then(res=>{
                 this.routeName = res.data.name
                 this.isDirectional = res.data.directional

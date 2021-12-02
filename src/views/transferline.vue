@@ -45,7 +45,7 @@
             },
             getData(){
                 //数据
-                request.get("line/find/transfer/line/"+this.routeName
+                request.get("line/find/transfer/"+this.routeName
 
                 ).then(res => {
                     console.log(res);

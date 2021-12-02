@@ -84,15 +84,19 @@
                 tableData:[],
             }
         },
+
         methods:{
             getData(){
-                var realhourValue;
+                var realhourValue,realminmuteValue;
                 /*数据格式补0*/
                 if (this.hourValue < 10)
                     realhourValue="0"+this.hourValue;
                 else realhourValue = this.hourValue;
-                let url = this.stationID+"/"+realhourValue+":"+this.minuteValue+"/"+this.lineCount;
-                request.get("/timetable/all/timetable/for/id/"+url
+                if (this.minuteValue < 10)
+                    realminmuteValue="0"+this.minuteValue;
+                else realminmuteValue = this.minuteValue;
+                let url = this.stationID+"/"+realhourValue+":"+realminmuteValue+"/"+this.lineCount;
+                request.get("/timetable/all/id/"+url
 
                 ).then(res => {
                     console.log(res);
@@ -121,6 +125,7 @@
             },
             search(){
                 this.getData();
+                this.tableData=[]
             },
         }
     }

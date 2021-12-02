@@ -60,6 +60,8 @@
                 metroStations:[],
                 oneWayStations:[],
                 stationPairs:[],
+                lineList:[],
+                myIdList:[],
                 stationPairNumbers:[],
                 showdetails:false,
                 options: ref([
@@ -146,6 +148,17 @@
                         globalCoord: true // 缺省为 false
                     },
                 });
+                let that = this
+                //处理点击事件
+                myChart.on('click',function (params) {
+                    if (that.value == 'Option1')
+                    {
+                        that.showdetails=true;
+                        that.cardTitle=params.name + "  id:"+that.myIdList[params.dataIndex];
+                        that.details = that.lineList[params.dataIndex]
+                       }
+
+                })
 
 
             },
@@ -160,7 +173,7 @@
                     },
                     tooltip: {},
                     xAxis: {
-                        data: ['起点站','终点站','地铁站','单行站']
+                        data: ['起点站','终点站','地铁站']
                     },
                     yAxis: {},
                     series: [
@@ -270,7 +283,7 @@
             getData(){
                 //mounted时请求数据
                 //请求前15个线路最多的站点
-                request.get("station/find/top15/linenumber/of/station/"
+                request.get("station/top15/linenumber"
 
                 ).then(res => {
                     console.log(res);
@@ -289,6 +302,8 @@
                         this.stations.forEach((element,index)=>{
                             this.stationNames.push(element.stationNode.name);
                             this.lineNumbers.push(element.lineNumber)
+                            this.lineList.push(element.lineList)
+                            this.myIdList.push(element.stationNode.myId)
                         })
 
 
@@ -297,7 +312,7 @@
 
 
                 //请求始发站
-                request.get("station/find/number/of/begin/station/"
+                request.get("station/find/number/of/begin"
 
                 ).then(res => {
                     console.log(res);
@@ -318,7 +333,7 @@
                 });
 
                 //请求终点站
-                request.get("station/find/number/of/end/station/"
+                request.get("station/find/number/of/end"
 
                 ).then(res => {
                     console.log(res);
@@ -339,7 +354,7 @@
                 });
 
                 //请求地铁站
-                request.get("station/find/number/of/metro/station/"
+                request.get("station/find/number/of/metro"
 
                 ).then(res => {
                     console.log(res);
@@ -359,29 +374,10 @@
                     }
                 });
 
-                //请求单行站
-                request.get("line/find/the/number/of/oneway/station/"
 
-                ).then(res => {
-                    console.log(res);
-
-                    if (res.data == null)
-                    {
-                        this.$message({
-                            type: "error",
-                            message: res.msg
-                        })
-
-                    }
-                    else
-                    {
-                        this.oneWayStations = res.data.stations;
-                        this.stationNumbers[3]=res.data.number;
-                    }
-                });
 
                 //请求按连接线路数量排序两个相邻站台
-                request.get("station/top15/station/pair/"
+                request.get("station/top15/pair/"
 
                 ).then(res => {
                     console.log(res);

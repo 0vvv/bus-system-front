@@ -52,7 +52,7 @@
         },
         methods:{
             getData(){
-                request.get("/timetable/timetable/for/line/"+ this.routeName
+                request.get("/timetable/line/"+ this.routeName
 
                 ).then(res => {
                     console.log(res);
@@ -89,7 +89,7 @@
                 });
             },
             search(){
-
+                this.clear();
                 this.getData();
             },
             rowToCol(){
@@ -116,8 +116,10 @@
 
             },
             clear(){
-                this.tableHead.splice(0,this.tableHead,length);
-                this.tableData.splice(0,this.tableData,length);
+                this.tableHead=[];
+                this.tableData=[];
+                this.ansTable=[];
+                this.tempList=[];
             }
 
         }
