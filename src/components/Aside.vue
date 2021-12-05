@@ -19,7 +19,7 @@
                     <el-menu-item index="stationofline">全部站点查询</el-menu-item>
                     <el-menu-item index="lineofstation">停靠公交线路查询</el-menu-item>
                     <el-menu-item index="DirectPathByRoute">沿途站点查询</el-menu-item>
-                    <el-menu-item index="1-3">最短路径查询</el-menu-item>
+                    <el-menu-item index="shortestpath">最短路径查询</el-menu-item>
                     <el-menu-item index="DirectRoute">直达线路查询</el-menu-item>
 
             </el-sub-menu>

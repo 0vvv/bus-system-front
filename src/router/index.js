@@ -95,6 +95,11 @@ const routes = [
     name:'replaceline',
     component: () => import ("@/views/replaceline"),
   },
+  {
+    path: '/shortestpath',
+    name:'shortestpath',
+    component: () => import ("@/views/shortestpath"),
+  },
 ]
 
 const router = createRouter({

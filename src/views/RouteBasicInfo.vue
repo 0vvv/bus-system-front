@@ -142,16 +142,16 @@ export default {
 
         },
         getData(){
-            request.get("/line/percise/name/"+ this.searchName,{
+            request.get("/line/vague/name/"+ this.searchName,{
             }).then(res=>{
-                this.routeName = res.data.name
-                this.isDirectional = res.data.directional
-                this.kilometer = res.data.kilometer+"km"
-                this.onewayTime = res.data.onewayTime
-                this.runtime = res.data.runtime+"分"
-                this.route = res.data.route
-                this.interval = res.data.interval+"分"
-                this.type = this.TYPE_DICT[res.data.type]
+                this.routeName = this.searchName
+                this.isDirectional = res.data[0].directional
+                this.kilometer = res.data[0].kilometer+"km"
+                this.onewayTime = res.data[0].onewayTime
+                this.runtime = res.data[0].runtime+"分"
+                this.route = res.data[0].route
+                this.interval = res.data[0].interval+"分"
+                this.type = this.TYPE_DICT[res.data[0].type]
 
             })
         }

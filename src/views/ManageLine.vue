@@ -157,23 +157,32 @@
             onSubmit(){
                 this.form.lineNumber = parseInt(this.form.name)
                 //this.postData()
-                this.postTimetable()
+                //this.postTimetable()
 
             },
 
             postTimetable(){
                 //处理并发送班次表信息
-                var fmt = SimpleDateFormat("HH:mm");
-                this.dynamicValidateForm.domains.forEach((element, index) => {
-                    var aTime = fmt.parse(element.time);//Date 类型
-                    this.timetableList.push(aTime)
-                })
-                /*for(var i = 0; i < this.timetableNum ; i++) {
-                    this.dynamicValidateForm.domains.forEach((element, index) => {
+               alert(formatDate(new Date().getTime(),'hh:mm'))
+                var intervalTime = fmt.parse("00:0"+this.form.interval)
+                var firstTimetableList = [];
 
+                this.dynamicValidateForm.domains.forEach((element, index) => {
+                    var aTime = formatDate(new Date(element.time),'hh:mm');//Date 类型
+                    alert(aTime)
+                    firstTimetableList.push(aTime)//把第一班车时间压入dateList中
+                    var strTime = fmt.format(aTime)
+                    alert(strTime)
+                })
+
+                /*for(var i = 0; i < this.timetableNum ; i++) {
+                    firstTimetableList.forEach((element, index) => {
+                        var strTime = fmt.format(element) ;
+                        this.timetableList.push(strTime) ;
+                        element = element + intervalTime ; //把下一班车的时间压入dataList中
                     })
-                }
-*/
+                }*/
+
 
             },
             postData(){
@@ -225,58 +234,36 @@
             },
         }
     }
-    function SimpleDateFormat(pattern){
-        var fmt = new Object();
-        fmt.pattern = pattern;
-
-        fmt.parse = function(source){
-            try{
-                return new Date(source);
-            }catch(e){
-                console.log("字符串 "+source+" 转时间格式失败！");
-                return null;
-            }
+    /**
+     * 时间格式化
+     */
+    Date.prototype.format = function(fmt){
+        var o = {
+            "M+" : this.getMonth()+1,                 //月份
+            "d+" : this.getDate(),                    //日
+            "h+" : this.getHours(),                   //小时
+            "m+" : this.getMinutes(),                 //分
+            "s+" : this.getSeconds(),                 //秒
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度
+            "S"  : this.getMilliseconds()             //毫秒
         };
 
-        fmt.format = function(date){
-            if(typeof(date) == "undefined" || date == null || date==""){
-                return "";
+        if(/(y+)/.test(fmt)){
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+
+        for(var k in o){
+            if(new RegExp("("+ k +")").test(fmt)){
+                fmt = fmt.replace(
+                    RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
             }
+        }
 
-            try{
-                date = new Date(date);
-            }catch(e){
-                console.log("时间 "+date+" 格式化失败！");
-                return "";
-            }
-
-            var strTime = this.pattern;//时间表达式的正则
-
-            var o = {
-                "M+": date.getMonth() + 1, //月份
-                "d+": date.getDate(), //日
-                "H+": date.getHours(), //小时
-                "m+": date.getMinutes(), //分
-                "s+": date.getSeconds(), //秒
-                "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-                "S": date.getMilliseconds() //毫秒
-            };
-
-            if (/(y+)/.test(strTime)){
-                strTime = strTime
-                    .replace(RegExp.$1, (date.getFullYear() + "")
-                        .substr(4 - RegExp.$1.length));
-            }
-            for (var k in o){
-                if (new RegExp("(" + k + ")").test(strTime)){
-                    strTime = strTime.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-                }
-            }
-
-            return strTime;
-        };
         return fmt;
     }
+
+
+
 </script>
 
 <style scoped>
