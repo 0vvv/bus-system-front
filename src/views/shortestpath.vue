@@ -81,9 +81,16 @@
                     },
                     {
                         value:'Option3',
-                        label:'按最少用时查询'
+                        label:'按最少用时查询(APOC)'
                     },
-
+                    {
+                        value:'Option4',
+                        label:'按最少用时查询(REDUCE)'
+                    },
+                    {
+                        value:'Option5',
+                        label:'按最少用时查询(APOC+REDUCE)'
+                    },
                 ]
 
             }
@@ -101,7 +108,12 @@
                     case "Option3":
                         this.getDataByTime();
                         break;
-
+                    case "Option4":
+                        this.getDataByTimeReduce();
+                        break;
+                    case "Option5":
+                        this.getDataByTimeApocAndReduce();
+                        break;
                 }
 
             },
@@ -197,7 +209,80 @@
                 })
             },
             getDataByTime(){
+
+                var n = Number(this.search1+this.search2);
+                if(!isNaN(n)) {
+                    //是id
+                    request.get("/line/get/minTime/path/id/apoc/" + this.search1 + "/" + this.search2, {
+
+                    }).then(res => {  //结果放在.then里面，通过=>取后台返回结果
+                        console.log(this.search1 + " " + this.search2)
+                        console.log(res.data)
+                        if (res.data == null)
+                            this.$message.warning(res.msg)
+                        else{
+                            this.$message.success("查询成功！")
+                            var length = res.data[0].stations.length - 1;
+                            this.name = res.data[0].stations[0].name + "-" + res.data[0].stations[length].name;
+                            res.data.forEach((element,index)=>{
+                                this.tableData.push({
+                                    "length": element.length,
+                                    "route": this.name,
+                                    "stations":element.stations,
+                                    "time":element.time,
+                                })
+                            })
+                        }
+                    })
+                }
+                else{
+                    //是name
                 request.get("/line/get/minTime/path/name/apoc/" + this.search1 + "/" + this.search2, {
+
+                }).then(res => {  //结果放在.then里面，通过=>取后台返回结果
+                    console.log(this.search1 + " " + this.search2)
+                    console.log(res.data)
+                    if (res.data == null)
+                        this.$message.warning(res.msg)
+                    else{
+                        this.$message.success("查询成功！")
+                        this.name = this.search1 + "-" + this.search2;
+                        res.data.forEach((element,index)=>{
+                            this.tableData.push({
+                                "length": element.length,
+                                "route": this.name,
+                                "stations":element.stations,
+                                "time":element.time,
+                            })
+                        })
+                    }
+                })
+                }
+            },
+            getDataByTimeReduce(){
+                request.get("/line/get/minTime/path/name/reduce/" + this.search1 + "/" + this.search2, {
+
+                }).then(res => {  //结果放在.then里面，通过=>取后台返回结果
+                    console.log(this.search1 + " " + this.search2)
+                    console.log(res.data)
+                    if (res.data == null)
+                        this.$message.warning(res.msg)
+                    else{
+                        this.$message.success("查询成功！")
+                        this.name = this.search1 + "-" + this.search2;
+                        res.data.forEach((element,index)=>{
+                            this.tableData.push({
+                                "length": element.length,
+                                "route": this.name,
+                                "stations":element.stations,
+                                "time":element.time,
+                            })
+                        })
+                    }
+                })
+            },
+            getDataByTimeApocAndReduce(){
+                request.get("/line/get/minTime/path/name/all/" + this.search1 + "/" + this.search2, {
 
                 }).then(res => {  //结果放在.then里面，通过=>取后台返回结果
                     console.log(this.search1 + " " + this.search2)

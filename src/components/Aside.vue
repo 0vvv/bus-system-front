@@ -4,6 +4,8 @@
                 default-active="2"
                 class="el-menu-vertical-demo"
                 router
+                background-color="#fff"
+
         >
 
             <el-menu-item index="RouteBasicInfo">

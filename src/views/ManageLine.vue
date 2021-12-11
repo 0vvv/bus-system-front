@@ -137,6 +137,7 @@
                     route:"金河客运站-花明公交站",
                     runtime:"6:00-23:59",
                     type:"C",
+                    identity:0
                 },
                 dynamicValidateForm: {
                     domains: [
@@ -156,33 +157,53 @@
         methods:{
             onSubmit(){
                 this.form.lineNumber = parseInt(this.form.name)
-                //this.postData()
-                //this.postTimetable()
+                this.form.directional = Boolean(this.form.directional)
+                //线路和站点信息
+                this.postData()
+                //班次信息
+                this.postTimetable()
+                this.$message({
+                    type: "success",
+                    message: "成功创建"
+                })
 
             },
 
             postTimetable(){
                 //处理并发送班次表信息
-               alert(formatDate(new Date().getTime(),'hh:mm'))
-                var intervalTime = fmt.parse("00:0"+this.form.interval)
                 var firstTimetableList = [];
 
                 this.dynamicValidateForm.domains.forEach((element, index) => {
-                    var aTime = formatDate(new Date(element.time),'hh:mm');//Date 类型
-                    alert(aTime)
-                    firstTimetableList.push(aTime)//把第一班车时间压入dateList中
-                    var strTime = fmt.format(aTime)
-                    alert(strTime)
+                    firstTimetableList.push(element.time)//把第一班车时间压入dateList中
                 })
 
-                /*for(var i = 0; i < this.timetableNum ; i++) {
-                    firstTimetableList.forEach((element, index) => {
-                        var strTime = fmt.format(element) ;
-                        this.timetableList.push(strTime) ;
-                        element = element + intervalTime ; //把下一班车的时间压入dataList中
-                    })
-                }*/
+                //对每个站点分别加入所有班次
+                this.dynamicValidateForm.domains.forEach((element,index) => {
 
+                        //使用自定义functionaddTime调整日期格式
+                        var cur_time = addTime(firstTimetableList[index],0)
+                        for(var i = 0; i < this.timetableNum ; i++){
+                            cur_time = addTime(cur_time,this.form.interval)
+                            this.timetableList.push(
+                                {
+                                    "routeName": this.form.name,
+                                    "stationID": index,
+                                    "passTime": cur_time,
+                                    "stationName": element.value
+                                }
+                            )
+                        }
+
+
+
+                })
+
+                //发送班次信息
+                const req3 = request({
+                    method:'post',
+                    url:'/timetable/addNewTimetables',
+                    data:JSON.stringify(this.timetableList)
+                })
 
             },
             postData(){
@@ -204,7 +225,8 @@
                 this.dynamicValidateForm.domains.forEach((element,index)=>{
                     this.stationList.push({
                         "name":element.value,
-                        "myId":index
+                        "myId":index,
+
                     })
                 })
                 //发送站点信息
@@ -232,34 +254,32 @@
                     value: '',
                 })
             },
-        }
+
+        },
+
     }
-    /**
-     * 时间格式化
-     */
-    Date.prototype.format = function(fmt){
-        var o = {
-            "M+" : this.getMonth()+1,                 //月份
-            "d+" : this.getDate(),                    //日
-            "h+" : this.getHours(),                   //小时
-            "m+" : this.getMinutes(),                 //分
-            "s+" : this.getSeconds(),                 //秒
-            "q+" : Math.floor((this.getMonth()+3)/3), //季度
-            "S"  : this.getMilliseconds()             //毫秒
-        };
+    function addTime(currentTime,interval) {
 
-        if(/(y+)/.test(fmt)){
-            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
-        }
-
-        for(var k in o){
-            if(new RegExp("("+ k +")").test(fmt)){
-                fmt = fmt.replace(
-                    RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            var str = currentTime.split(':');
+            var realHour=""
+            var realMin="";
+            var hour = parseInt(str[0]);
+            var minute = parseInt(str[1]) + parseInt(interval);
+            if (minute >= 60 ) {
+                minute = minute - 60;
+                hour++ ;
             }
-        }
+            if (hour < 10)
+                realHour = '0'+hour.toString()
+            else
+                realHour = hour.toString()
+            if (minute < 10)
+                realMin = '0'+ minute.toString()
+            else
+                realMin = minute.toString()
+            return realHour+':'+realMin
 
-        return fmt;
+
     }
 
 
