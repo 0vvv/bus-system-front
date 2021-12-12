@@ -1,14 +1,18 @@
 <template>
+    <div class="noScrollbar">
 <el-main>
     <div  style="padding:10px">
         <!--        搜索框-->
         <el-row :gutter="0"  >
             <div >
-            <el-input v-model="searchName" placeholder="请输入线路的名称">
+            <el-autocomplete
+                    v-model="searchName"
+                    :fetch-suggestions="querySearchAsync"
+                    placeholder="请输入线路的名称">
                 <template #prefix>
                     <i class="el-input__icon el-icon-search"></i>
                 </template>
-            </el-input>
+            </el-autocomplete>
             </div>
             <div style="margin-left: 10px">
             <el-button type="primary" @click="search">查询</el-button>
@@ -127,7 +131,7 @@
             </div>
         </div>
     </transition>
-</el-main>
+</el-main></div>
 </template>
 
 <script>
@@ -208,11 +212,53 @@ export default {
                 this.type = this.TYPE_DICT[res.data[0].type]
             }
             })
-        }
+        },
+        loadAll() {
+            let lines = [];
+            request.get("/line/find/all/lines"
+            ).then(res => {
+                console.log(res);
+                if (res.data == null)
+                {
+                    this.$message({
+                        type: "error",
+                        message: res.msg
+                    })
+
+                }
+                else
+                {
+                    res.data.forEach((element,index)=>{
+                        lines.push({
+                            "value" : element.name,
+                            "address" : element.name
+                        })
+                    })
+                }
+            })
+            return lines
+        },
+        querySearchAsync(queryString, cb) {
+            var restaurants = this.restaurants;
+            var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+                cb(results);
+            }, 300 * Math.random());
+        },
+        createStateFilter(queryString) {
+            return (state) => {
+                return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+            };
+        },
     },
     beforeDestroy() {
         clearTimeout(this.timer);
-    }
+    },
+    mounted() {
+        this.restaurants = this.loadAll();
+    },
 
 
 }
@@ -225,12 +271,10 @@ export default {
     $teal: #306d85;
     $black: #000;
 
-    .el-main {
-
+    .noScrollbar {
         position: relative;
         height: 100vh;
         overflow: hidden;
-
     }
 
     .slide-fade-enter-active {

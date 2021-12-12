@@ -1,5 +1,6 @@
 <template>
     <div  style="padding:10px">
+        <div class="noScrollbar">
         <el-main>
         <!--        搜索框-->
         <el-row :gutter="0"  >
@@ -61,6 +62,7 @@
                 </div>
             </transition>
         </el-main>
+        </div>
     </div>
 
 
@@ -119,7 +121,7 @@
     $teal: #306d85;
     $black: #000;
 
-    .el-main {
+    .noScrollbar {
 
         position: relative;
         height: 100vh;

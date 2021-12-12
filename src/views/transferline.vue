@@ -3,11 +3,14 @@
         <!--        搜索框-->
         <el-row :gutter="0"  style="padding: 10px">
             <div >
-                    <el-input v-model="routeName" placeholder="请输入要查询的线路">
+                    <el-autocomplete
+                            v-model="routeName"
+                            :fetch-suggestions="querySearchAsync"
+                            placeholder="请输入要查询的线路">
                         <template #prefix>
                             <i class="el-input__icon el-icon-search"></i>
                         </template>
-                    </el-input>
+                    </el-autocomplete>
             </div>
 
             <div style="margin-left: 20px">
@@ -72,9 +75,50 @@
                     }
                 });
             },
+            loadAll() {
+                let lines = [];
+                request.get("/line/find/all/lines"
+                ).then(res => {
+                    console.log(res);
+                    if (res.data == null)
+                    {
+                        this.$message({
+                            type: "error",
+                            message: res.msg
+                        })
+
+                    }
+                    else
+                    {
+                        res.data.forEach((element,index)=>{
+                            lines.push({
+                                "value" : element.name,
+                                "address" : element.name
+                            })
+                        })
+                    }
+                })
+                return lines
+            },
+            querySearchAsync(queryString, cb) {
+                var restaurants = this.restaurants;
+                var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    cb(results);
+                }, 300 * Math.random());
+            },
+            createStateFilter(queryString) {
+                return (state) => {
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
 
         },
-
+        mounted() {
+            this.restaurants = this.loadAll();
+        },
     }
 </script>
 

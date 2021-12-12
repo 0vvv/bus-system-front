@@ -6,8 +6,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import qs from 'qs'
-/*import Background from "./components/Background"
-Vue.component("Background", Background);*/
+
 
 const app = createApp(App)
 

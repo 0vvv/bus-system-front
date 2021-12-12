@@ -1,16 +1,17 @@
 <template>
     <el-main>
         <!--搜索框-->
-        <el-row >
-
-            <el-col :span="10" style="padding:10px;margin-left: 10px">
-                <el-input v-model="routeName" placeholder="输入线路名称" />
-            </el-col>
-            <el-col :span="2">
-            <div style="padding:10px; margin-left: 20px;">
+        <el-row :gutter="0" >
+                <div style="padding:10px;">
+                <el-autocomplete
+                        v-model="routeName"
+                        :fetch-suggestions="querySearchAsync"
+                        placeholder="输入线路名称" />
+                </div>
+            <div style="padding:10px; margin-left: 10px;">
                 <el-button type="primary" @click="search">查询</el-button>
             </div>
-            </el-col>
+
 
 
         </el-row>
@@ -19,7 +20,7 @@
         <el-row  >
             <div>
                 <el-table :data="tableData"
-                          style="width:100%;">
+                          max-width="400">
                     <el-table-column
                             v-for="(item, index) in tableHead"
                             :key=index
@@ -120,9 +121,52 @@
                 this.tableData=[];
                 this.ansTable=[];
                 this.tempList=[];
-            }
+            },
+            loadAll() {
+                let lines = [];
+                request.get("/line/find/all/lines"
+                ).then(res => {
+                    console.log(res);
+                    if (res.data == null)
+                    {
+                        this.$message({
+                            type: "error",
+                            message: res.msg
+                        })
 
-        }
+                    }
+                    else
+                    {
+                        res.data.forEach((element,index)=>{
+                            lines.push({
+                                "value" : element.name,
+                                "address" : element.name
+                            })
+                        })
+                    }
+                })
+                return lines
+            },
+            querySearchAsync(queryString, cb) {
+                var restaurants = this.restaurants;
+                var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    cb(results);
+                }, 300 * Math.random());
+            },
+            createStateFilter(queryString) {
+                return (state) => {
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+
+        },
+        mounted() {
+            this.restaurants = this.loadAll();
+        },
+
     }
 </script>
 

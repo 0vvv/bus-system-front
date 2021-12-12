@@ -39,8 +39,9 @@
                                         v-for="(station, index) in props.row.stations"
                                         :key="index"
                                         :hollow="station.hollow"
-                                        :color="station.color"
                                         :timestamp="'ID:'+station.myId"
+                                        color="rgba(52,152,219,.9)"
+                                        size='large'
 
                                 >
                                     {{ station.name }}

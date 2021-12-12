@@ -9,11 +9,14 @@
                         content="输入查询线路 如：15路上行"
                         placement="top-start"
                 >
-                <el-input v-model="routeName1" placeholder="线路1">
+                <el-autocomplete
+                        v-model="routeName1"
+                        :fetch-suggestions="querySearchAsync"
+                        placeholder="线路1">
                     <template #prefix>
                         <i class="el-input__icon el-icon-search"></i>
                     </template>
-                </el-input>
+                </el-autocomplete>
                 </el-tooltip>
             </div>
             <div  style="margin-left: 10px">
@@ -23,11 +26,14 @@
                         content="输入查询线路 如：30路下行"
                         placement="top-start"
                 >
-                <el-input v-model="routeName2" placeholder="线路2">
+                <el-autocomplete
+                        v-model="routeName2"
+                        :fetch-suggestions="querySearchAsync"
+                        placeholder="线路2">
                     <template #prefix>
                         <i class="el-input__icon el-icon-search"></i>
                     </template>
-                </el-input>
+                </el-autocomplete>
                 </el-tooltip>
             </div>
             <div style="margin-left: 20px">
@@ -100,7 +106,49 @@
                     }
                 });
             },
-        }
+            loadAll() {
+                let lines = [];
+                request.get("/line/find/all/lines"
+                ).then(res => {
+                    console.log(res);
+                    if (res.data == null)
+                    {
+                        this.$message({
+                            type: "error",
+                            message: res.msg
+                        })
+
+                    }
+                    else
+                    {
+                        res.data.forEach((element,index)=>{
+                            lines.push({
+                                "value" : element.name,
+                                "address" : element.name
+                            })
+                        })
+                    }
+                })
+                return lines
+            },
+            querySearchAsync(queryString, cb) {
+                var restaurants = this.restaurants;
+                var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    cb(results);
+                }, 300 * Math.random());
+            },
+            createStateFilter(queryString) {
+                return (state) => {
+                    return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+        },
+        mounted() {
+            this.restaurants = this.loadAll();
+        },
     }
 </script>
 

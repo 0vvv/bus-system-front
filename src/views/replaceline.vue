@@ -33,7 +33,8 @@
                                 v-for="(station, index) in stations"
                                 :key="index"
                                 :hollow="station.hollow"
-                                :color="station.color"
+                                color="rgba(52,152,219,.9)"
+                                size='large'
                         >
                             {{ station.name }}
                         </el-timeline-item>
