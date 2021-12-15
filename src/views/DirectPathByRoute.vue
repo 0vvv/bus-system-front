@@ -1,14 +1,14 @@
 <template>
     <div style="padding: 10px">
-        <div style="margin: 10px 0">
-            站点1:
-            <el-input v-model="search1" placeholder="请输入站点1的名称……" style="width: 25%" clearable/>
+        <div style="padding: 10px">
+
+            <el-input v-model="search1" placeholder="请输入站点1的名称" style="width: 25%;margin-right:10px;margin-bottom: 10px" clearable/>
+
+
+            <el-input v-model="search2" placeholder="请输入站点2的名称" style="width: 25%;margin-bottom: 10px" clearable/>
             <tr/>
-            站点2:
-            <el-input v-model="search2" placeholder="请输入站点2的名称……" style="width: 25%" clearable/>
-            <tr/>
-            线路&nbsp&nbsp:
-            <el-input v-model="search3" placeholder="请输入线路的名称……" style="width: 25%" clearable/>
+
+            <el-input v-model="search3" placeholder="请输入线路的名称" style="width: 25%;margin-bottom: 10px;margin-right:10px" clearable/>
             <el-button type="primary" style="margin: 5px" @click="findPath">搜索途径站点</el-button>
         </div>
         <div class="block">

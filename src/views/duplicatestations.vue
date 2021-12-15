@@ -3,12 +3,7 @@
         <!--        搜索框-->
         <el-row :gutter="0"  style="padding: 10px">
             <div >
-                <el-tooltip
-                        class="item"
-                        effect="dark"
-                        content="输入查询线路 如：15路上行"
-                        placement="top-start"
-                >
+
                 <el-autocomplete
                         v-model="routeName1"
                         :fetch-suggestions="querySearchAsync"
@@ -17,15 +12,10 @@
                         <i class="el-input__icon el-icon-search"></i>
                     </template>
                 </el-autocomplete>
-                </el-tooltip>
+
             </div>
             <div  style="margin-left: 10px">
-                <el-tooltip
-                        class="item"
-                        effect="dark"
-                        content="输入查询线路 如：30路下行"
-                        placement="top-start"
-                >
+
                 <el-autocomplete
                         v-model="routeName2"
                         :fetch-suggestions="querySearchAsync"
@@ -34,7 +24,7 @@
                         <i class="el-input__icon el-icon-search"></i>
                     </template>
                 </el-autocomplete>
-                </el-tooltip>
+
             </div>
             <div style="margin-left: 20px">
                 <el-button type="primary" @click="search">查询</el-button>
